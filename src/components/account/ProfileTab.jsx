@@ -49,7 +49,7 @@ export default function ProfileTab() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-primary py-3.5 font-display text-[10px] font-black uppercase tracking-widest text-base transition-colors hover:bg-acid hover:text-black disabled:opacity-40"
+        className="w-full bg-primary py-3.5 font-display text-[10px] font-semibold uppercase tracking-widest text-base transition-colors hover:opacity-80 disabled:opacity-40"
       >
         {loading ? '…' : 'Save Changes'}
       </button>
@@ -60,7 +60,7 @@ export default function ProfileTab() {
 function Field({ label, ...props }) {
   return (
     <div className="flex flex-1 flex-col gap-1.5">
-      <label className="font-display text-[9px] font-black uppercase tracking-widest text-secondary">
+      <label className="font-display text-[9px] font-semibold uppercase tracking-widest text-secondary">
         {label}
       </label>
       <input

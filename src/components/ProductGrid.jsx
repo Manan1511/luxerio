@@ -33,7 +33,7 @@ export default function ProductGrid({ products = [], isLoading, isFetchingMore, 
             type="button"
             onClick={onLoadMore}
             disabled={isFetchingMore}
-            className="border border-hairline px-12 py-3 font-display text-[10px] font-black uppercase tracking-widest text-primary transition-colors hover:border-acid hover:text-acid disabled:opacity-40"
+            className="border border-hairline px-12 py-3 font-display text-[10px] font-semibold uppercase tracking-widest text-primary transition-colors hover:border-acid hover:text-acid disabled:opacity-40"
           >
             {isFetchingMore ? 'Loading…' : 'Load More'}
           </button>
@@ -47,7 +47,7 @@ function EmptyGrid() {
   return (
     <div className="flex-1">
       <div className="flex min-h-[360px] flex-col items-center justify-center gap-4 border border-hairline">
-        <span className="bg-acid px-3 py-1 font-display text-[10px] font-black uppercase tracking-widest text-black">
+        <span className="bg-primary px-3 py-1 font-display text-[10px] font-semibold uppercase tracking-widest text-base">
           No Results
         </span>
         <p className="font-display text-xs uppercase tracking-widest text-secondary">

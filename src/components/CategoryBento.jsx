@@ -39,7 +39,7 @@ export default function CategoryBento() {
   return (
     <section className="mx-auto max-w-[1280px] px-6 py-20 lg:px-16">
       <div className="mb-10 flex items-end justify-between">
-        <h2 className="font-display text-2xl font-black uppercase tracking-tight text-primary md:text-3xl">
+        <h2 className="font-display text-2xl font-semibold uppercase tracking-tight text-primary md:text-3xl">
           Classifications
         </h2>
         <div className="h-[2px] flex-1 mx-8 bg-hairline" />
@@ -68,15 +68,15 @@ export default function CategoryBento() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
 
             {/* Acid corner tag. */}
-            <div className="absolute left-0 top-4 bg-acid px-3 py-1">
-              <span className="font-display text-[9px] font-black uppercase tracking-widest text-black">
+            <div className="absolute left-0 top-4 bg-primary px-3 py-1">
+              <span className="font-display text-[9px] font-semibold uppercase tracking-widest text-base">
                 {cat.tag}
               </span>
             </div>
 
             {/* Label. */}
             <div className="absolute bottom-0 left-0 right-0 p-5">
-              <p className="font-display text-lg font-black uppercase leading-tight tracking-tight text-white md:text-xl">
+              <p className="font-display text-lg font-semibold uppercase leading-tight tracking-tight text-white md:text-xl">
                 {cat.label}
                 {cat.sub && (
                   <span className="block text-xs font-bold text-acid">{cat.sub}</span>

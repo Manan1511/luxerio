@@ -27,7 +27,7 @@ export default function FilterRail({ categories, sizes, onCategoriesChange, onSi
       {/* Close button — mobile sheet only */}
       {onClose && (
         <div className="mb-4 flex items-center justify-between md:hidden">
-          <p className="font-display text-[9px] font-black uppercase tracking-[0.2em] text-secondary">Filters</p>
+          <p className="font-display text-[9px] font-semibold uppercase tracking-[0.2em] text-secondary">Filters</p>
           <button
             type="button"
             onClick={onClose}
@@ -42,7 +42,7 @@ export default function FilterRail({ categories, sizes, onCategoriesChange, onSi
       {/* Category — multi-select */}
       <div className="mb-6">
         <div className="mb-3 flex items-center justify-between">
-          <p className="font-display text-[9px] font-black uppercase tracking-[0.2em] text-secondary">Category</p>
+          <p className="font-display text-[9px] font-semibold uppercase tracking-[0.2em] text-secondary">Category</p>
           {categories.length > 0 && (
             <button
               type="button"
@@ -66,7 +66,7 @@ export default function FilterRail({ categories, sizes, onCategoriesChange, onSi
                     aria-hidden="true"
                   >
                     {active && (
-                      <svg width="8" height="8" viewBox="0 0 12 12" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round">
+                      <svg width="8" height="8" viewBox="0 0 12 12" fill="none" stroke="var(--bg-base)" strokeWidth="2.5" strokeLinecap="round">
                         <path d="M2 6l3 3 5-5" />
                       </svg>
                     )}
@@ -142,7 +142,7 @@ export default function FilterRail({ categories, sizes, onCategoriesChange, onSi
       <button
         type="button"
         onClick={() => { onApply(); onClose?.(); }}
-        className="w-full bg-primary py-2.5 font-display text-[10px] font-black uppercase tracking-widest text-base transition-colors hover:bg-acid hover:text-black"
+        className="w-full bg-primary py-2.5 font-display text-[10px] font-semibold uppercase tracking-widest text-base transition-colors hover:opacity-80"
       >
         Apply Filters
       </button>
@@ -160,7 +160,7 @@ function SizeGroup({ label, ariaLabel, options, sizes, onToggle }) {
   );
   return (
     <div className="mb-6">
-      <p className="mb-3 font-display text-[9px] font-black uppercase tracking-[0.2em] text-secondary">
+      <p className="mb-3 font-display text-[9px] font-semibold uppercase tracking-[0.2em] text-secondary">
         {label}
       </p>
       <div className="flex flex-wrap gap-1.5" role="group" aria-label={ariaLabel}>
@@ -172,9 +172,9 @@ function SizeGroup({ label, ariaLabel, options, sizes, onToggle }) {
               type="button"
               onClick={() => onToggle(item.value)}
               aria-pressed={active}
-              className={`h-8 min-w-[2rem] px-2.5 font-display text-[10px] font-black uppercase tracking-wider transition-colors ${
+              className={`h-8 min-w-[2rem] px-2.5 font-display text-[10px] font-semibold uppercase tracking-wider transition-colors ${
                 active
-                  ? 'bg-acid text-black'
+                  ? 'bg-primary text-base'
                   : 'border border-hairline text-secondary hover:border-acid hover:text-primary'
               }`}
             >

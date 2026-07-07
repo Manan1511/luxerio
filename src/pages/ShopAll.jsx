@@ -136,7 +136,7 @@ export default function ShopAll() {
     <div className="mx-auto max-w-[1280px] px-6 py-12 lg:px-16">
       {/* Page header */}
       <div className="mb-8 border-b border-hairline pb-6">
-        <h1 className="font-display text-4xl font-black uppercase tracking-tight text-primary md:text-5xl">
+        <h1 className="font-display text-4xl font-semibold uppercase tracking-tight text-primary md:text-5xl">
           {urlQuery ? `"${urlQuery}"` : 'Shop'}
         </h1>
         <p className="mt-2 text-xs uppercase tracking-wider text-secondary">
@@ -155,14 +155,14 @@ export default function ShopAll() {
           onClick={() => setFilterSheetOpen(true)}
           aria-expanded={filterSheetOpen}
           aria-controls="filter-sheet"
-          className="flex items-center gap-2 border border-hairline px-4 py-2 font-display text-[10px] font-black uppercase tracking-widest text-primary transition-colors hover:border-acid hover:text-acid"
+          className="flex items-center gap-2 border border-hairline px-4 py-2 font-display text-[10px] font-semibold uppercase tracking-widest text-primary transition-colors hover:border-acid hover:text-acid"
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
             <path d="M4 6h16M7 12h10M10 18h4" />
           </svg>
           Filters
           {activeFilterCount > 0 && (
-            <span className="ml-1 flex h-4 w-4 items-center justify-center bg-acid text-[9px] font-black text-black">
+            <span className="ml-1 flex h-4 w-4 items-center justify-center bg-primary text-[9px] font-semibold text-base">
               {activeFilterCount}
             </span>
           )}

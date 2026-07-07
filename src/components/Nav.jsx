@@ -76,7 +76,7 @@ export default function Nav() {
               {count > 0 && (
                 <span
                   aria-hidden="true"
-                  className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center bg-acid px-1 text-[10px] font-bold text-black"
+                  className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center bg-primary px-1 text-[10px] font-bold text-base"
                 >
                   {count}
                 </span>
@@ -151,7 +151,7 @@ export default function Nav() {
               to={l.to}
               onClick={close}
               className={({ isActive }) =>
-                `border-b border-hairline py-4 font-display text-sm font-black uppercase tracking-widest transition-colors hover:text-acid ${
+                `border-b border-hairline py-4 font-display text-sm font-semibold uppercase tracking-widest transition-colors hover:text-acid ${
                   isActive ? 'text-acid' : 'text-primary'
                 }`
               }
@@ -162,7 +162,7 @@ export default function Nav() {
           <Link
             to="/cart"
             onClick={close}
-            className="border-b border-hairline py-4 font-display text-sm font-black uppercase tracking-widest text-primary transition-colors hover:text-acid"
+            className="border-b border-hairline py-4 font-display text-sm font-semibold uppercase tracking-widest text-primary transition-colors hover:text-acid"
           >
             Bag{count > 0 && <span className="ml-2 text-acid">({count})</span>}
           </Link>
@@ -171,7 +171,7 @@ export default function Nav() {
               <Link
                 to="/account"
                 onClick={close}
-                className="flex items-center gap-2 font-display text-sm font-black uppercase tracking-widest text-acid hover:opacity-80"
+                className="flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-widest text-acid hover:opacity-80"
               >
                 <User size={18} weight="regular" />
                 Account
@@ -180,7 +180,7 @@ export default function Nav() {
               <button
                 type="button"
                 onClick={() => { close(); setAuthOpen(true); }}
-                className="flex items-center gap-2 font-display text-sm font-black uppercase tracking-widest text-primary hover:text-acid"
+                className="flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-widest text-primary hover:text-acid"
               >
                 <User size={18} weight="regular" />
                 Sign In

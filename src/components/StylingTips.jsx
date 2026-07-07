@@ -15,7 +15,7 @@ export default function StylingTips({ products = [] }) {
   return (
     <section className="border-t border-hairline pt-20">
       <div className="mx-auto max-w-[1280px] px-6 lg:px-16">
-        <h2 className="mb-10 text-center font-display text-2xl font-black uppercase tracking-tight text-primary md:text-3xl">
+        <h2 className="mb-10 text-center font-display text-2xl font-semibold uppercase tracking-tight text-primary md:text-3xl">
           Styling Tips
         </h2>
 
@@ -33,10 +33,10 @@ export default function StylingTips({ products = [] }) {
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <span className="mb-2 inline-block bg-acid px-2 py-0.5 font-display text-[9px] font-black uppercase tracking-widest text-black">
+                <span className="mb-2 inline-block bg-primary px-2 py-0.5 font-display text-[9px] font-semibold uppercase tracking-widest text-base">
                   The Full Kit
                 </span>
-                <h3 className="font-display text-xl font-black uppercase leading-tight tracking-tight text-white">
+                <h3 className="font-display text-xl font-semibold uppercase leading-tight tracking-tight text-white">
                   Complete The Look
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-white/70">
@@ -45,7 +45,7 @@ export default function StylingTips({ products = [] }) {
                 <Link
                   to={`/product/${hero.handle}`}
                   onClick={() => trackEvent(EVENTS.SELECT_ITEM, { item_name: hero.title, item_list_name: 'styling_tips' })}
-                  className="mt-4 inline-block border border-white/30 px-5 py-2 font-display text-[10px] font-black uppercase tracking-widest text-white transition-colors hover:border-acid hover:text-acid"
+                  className="mt-4 inline-block border border-white/30 px-5 py-2 font-display text-[10px] font-semibold uppercase tracking-widest text-white transition-colors hover:border-acid hover:text-acid"
                 >
                   Shop Now
                 </Link>
@@ -97,7 +97,7 @@ function CrossSellCard({ product }) {
         )}
       </div>
       <div className="flex items-center justify-between p-4">
-        <p className="font-display text-xs font-black uppercase tracking-tight text-primary">
+        <p className="font-display text-xs font-semibold uppercase tracking-tight text-primary">
           {product.title}
         </p>
         <button

@@ -31,13 +31,13 @@ export default function Hero({ heroBg }) {
       {heroBg && <div className="absolute inset-0 bg-black/60" />}
 
       <div className="relative z-10 flex h-full min-h-[100dvh] flex-col justify-end px-6 pb-20 lg:px-16">
-        <span className="mb-6 inline-flex w-fit items-center bg-acid px-3 py-1">
-          <span className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-black">
+        <span className="mb-6 inline-flex w-fit items-center bg-primary px-3 py-1">
+          <span className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-base">
             New Drop / FW25
           </span>
         </span>
 
-        <h1 className="max-w-3xl font-display text-[clamp(3.5rem,10vw,8rem)] font-black uppercase leading-[0.9] tracking-tight text-white">
+        <h1 className="max-w-3xl font-display text-[clamp(3.5rem,10vw,8rem)] font-semibold uppercase leading-[0.9] tracking-tight text-white">
           New
           <br />
           Drop
@@ -53,7 +53,7 @@ export default function Hero({ heroBg }) {
           <Link
             to="/shop"
             onClick={handleCta}
-            className="inline-flex items-center gap-3 border border-white/20 bg-white/10 px-6 py-3 font-display text-xs font-bold uppercase tracking-widest text-white backdrop-blur transition-colors hover:border-acid hover:bg-acid hover:text-black active:scale-[0.98]"
+            className="inline-flex items-center gap-3 border border-white/20 bg-white/10 px-6 py-3 font-display text-xs font-bold uppercase tracking-widest text-white backdrop-blur transition-colors hover:border-primary hover:bg-primary hover:text-base active:scale-[0.98]"
           >
             Access Season
             <ArrowRight size={14} weight="bold" />

@@ -60,7 +60,7 @@ export default function AuthModal({ open, onClose }) {
               key={m}
               type="button"
               onClick={() => { setMode(m); setErr(null); }}
-              className={`flex-1 pb-3 font-display text-[10px] font-black uppercase tracking-widest transition-colors ${
+              className={`flex-1 pb-3 font-display text-[10px] font-semibold uppercase tracking-widest transition-colors ${
                 mode === m
                   ? 'border-b-2 border-acid text-primary'
                   : 'text-secondary hover:text-primary'
@@ -102,7 +102,7 @@ export default function AuthModal({ open, onClose }) {
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 w-full bg-primary py-3.5 font-display text-[10px] font-black uppercase tracking-widest text-base transition-colors hover:bg-acid hover:text-black disabled:opacity-40"
+            className="mt-2 w-full bg-primary py-3.5 font-display text-[10px] font-semibold uppercase tracking-widest text-base transition-colors hover:opacity-80 disabled:opacity-40"
           >
             {loading ? '…' : mode === 'login' ? 'Sign In' : 'Create Account'}
           </button>
@@ -127,7 +127,7 @@ import { forwardRef } from 'react';
 const Field = forwardRef(function Field({ label, ...props }, ref) {
   return (
     <div className="flex flex-1 flex-col gap-1.5">
-      <label className="font-display text-[9px] font-black uppercase tracking-widest text-secondary">
+      <label className="font-display text-[9px] font-semibold uppercase tracking-widest text-secondary">
         {label}
       </label>
       <input

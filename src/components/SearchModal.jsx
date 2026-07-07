@@ -66,13 +66,13 @@ export default function SearchModal({ open, onClose }) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search field gear…"
             aria-label="Search products"
-            className="flex-1 bg-transparent font-display text-2xl font-black uppercase tracking-tight text-primary placeholder:text-secondary/40 focus:outline-none md:text-3xl"
+            className="flex-1 bg-transparent font-display text-2xl font-semibold uppercase tracking-tight text-primary placeholder:text-secondary/40 focus:outline-none md:text-3xl"
           />
 
           {query && (
             <button
               type="submit"
-              className="shrink-0 bg-acid px-5 py-2 font-display text-[10px] font-black uppercase tracking-widest text-black transition-opacity hover:opacity-80"
+              className="shrink-0 bg-primary px-5 py-2 font-display text-[10px] font-semibold uppercase tracking-widest text-base transition-opacity hover:opacity-80"
             >
               Search
             </button>

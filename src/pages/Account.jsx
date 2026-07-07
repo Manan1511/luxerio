@@ -41,16 +41,16 @@ export default function Account() {
     return (
       <>
         <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6 px-6 text-center">
-          <span className="inline-block bg-primary px-3 py-1 font-display text-[10px] font-black uppercase tracking-widest text-base">
+          <span className="inline-block bg-primary px-3 py-1 font-display text-[10px] font-semibold uppercase tracking-widest text-base">
             Access Required
           </span>
-          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-primary">
+          <h1 className="font-display text-3xl font-semibold uppercase tracking-tight text-primary">
             Sign in to your account.
           </h1>
           <button
             type="button"
             onClick={() => setAuthOpen(true)}
-            className="border border-hairline px-8 py-3 font-display text-[10px] font-black uppercase tracking-widest text-primary transition-colors hover:border-acid hover:text-acid"
+            className="border border-hairline px-8 py-3 font-display text-[10px] font-semibold uppercase tracking-widest text-primary transition-colors hover:border-acid hover:text-acid"
           >
             Sign In / Create Account
           </button>
@@ -65,7 +65,7 @@ export default function Account() {
       {/* Header. */}
       <div className="mb-10 flex items-start justify-between border-b border-hairline pb-6">
         <div>
-          <h1 className="font-display text-4xl font-black uppercase tracking-tight text-primary md:text-5xl">
+          <h1 className="font-display text-4xl font-semibold uppercase tracking-tight text-primary md:text-5xl">
             {customer.firstName ? `${customer.firstName} ${customer.lastName ?? ''}`.trim() : 'Account'}
           </h1>
           <p className="mt-2 font-display text-[10px] uppercase tracking-widest text-secondary">
@@ -75,7 +75,7 @@ export default function Account() {
         <button
           type="button"
           onClick={logout}
-          className="flex items-center gap-2 font-display text-[10px] font-black uppercase tracking-widest text-secondary transition-colors hover:text-primary"
+          className="flex items-center gap-2 font-display text-[10px] font-semibold uppercase tracking-widest text-secondary transition-colors hover:text-primary"
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
@@ -93,7 +93,7 @@ export default function Account() {
             onClick={() => setTab(t.id)}
             aria-selected={tab === t.id}
             role="tab"
-            className={`px-6 pb-3 font-display text-[10px] font-black uppercase tracking-widest transition-colors ${
+            className={`px-6 pb-3 font-display text-[10px] font-semibold uppercase tracking-widest transition-colors ${
               tab === t.id
                 ? 'border-b-2 border-acid text-primary'
                 : 'text-secondary hover:text-primary'

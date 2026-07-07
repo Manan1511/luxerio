@@ -28,7 +28,7 @@ export default function Categories() {
   return (
     <div className="mx-auto max-w-[1280px] px-6 py-10 lg:px-16">
       <div className="mb-10 border-b border-hairline pb-6">
-        <h1 className="font-display text-4xl font-black uppercase tracking-tight text-primary md:text-5xl">
+        <h1 className="font-display text-4xl font-semibold uppercase tracking-tight text-primary md:text-5xl">
           Classifications
         </h1>
         <p className="mt-2 font-display text-[10px] uppercase tracking-widest text-secondary">
@@ -54,8 +54,8 @@ export default function Categories() {
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
 
-            <div className="absolute left-0 top-3 bg-acid px-2.5 py-0.5">
-              <span className="font-display text-[8px] font-black uppercase tracking-widest text-black">
+            <div className="absolute left-0 top-3 bg-primary px-2.5 py-0.5">
+              <span className="font-display text-[8px] font-semibold uppercase tracking-widest text-base">
                 {cat.tag}
               </span>
             </div>
@@ -68,7 +68,7 @@ export default function Categories() {
 
             <div className="absolute bottom-0 left-0 right-0 p-4">
               <p
-                className="font-display text-sm font-black uppercase leading-tight tracking-tight md:text-base"
+                className="font-display text-sm font-semibold uppercase leading-tight tracking-tight md:text-base"
                 style={{ color: '#ffffff' }}
               >
                 {cat.label}

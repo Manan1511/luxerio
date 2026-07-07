@@ -20,7 +20,7 @@ export default function Cart() {
     <div className="mx-auto max-w-[1280px] px-6 py-10 lg:px-16">
       {/* Header. */}
       <div className="mb-10 border-b border-hairline pb-6">
-        <h1 className="font-display text-4xl font-black uppercase tracking-tight text-primary md:text-5xl">
+        <h1 className="font-display text-4xl font-semibold uppercase tracking-tight text-primary md:text-5xl">
           Manifest: Cart
         </h1>
         {count > 0 && (
@@ -39,7 +39,7 @@ export default function Cart() {
             {/* Desktop column headers. */}
             <div className="hidden grid-cols-[auto_1fr_auto_auto_auto] gap-4 border-b border-hairline pb-3 md:grid md:gap-6">
               {['Item', 'Details', 'Qty', 'Price', ''].map((h, i) => (
-                <span key={i} className="font-display text-[9px] font-black uppercase tracking-widest text-secondary">
+                <span key={i} className="font-display text-[9px] font-semibold uppercase tracking-widest text-secondary">
                   {h}
                 </span>
               ))}
@@ -80,7 +80,7 @@ function EmptyCart() {
         </svg>
       </div>
       <div>
-        <span className="inline-block bg-acid px-3 py-1 font-display text-[10px] font-black uppercase tracking-widest text-black">
+        <span className="inline-block bg-primary px-3 py-1 font-display text-[10px] font-semibold uppercase tracking-widest text-base">
           Empty
         </span>
         <p className="mt-4 font-display text-xs uppercase tracking-widest text-secondary">
@@ -89,7 +89,7 @@ function EmptyCart() {
       </div>
       <Link
         to="/shop"
-        className="border border-hairline px-8 py-3 font-display text-[10px] font-black uppercase tracking-widest text-primary transition-colors hover:border-acid hover:text-acid"
+        className="border border-hairline px-8 py-3 font-display text-[10px] font-semibold uppercase tracking-widest text-primary transition-colors hover:border-acid hover:text-acid"
       >
         Access Shop
       </Link>

@@ -26,7 +26,7 @@ export default function FeaturedProducts() {
       {/* Section header. */}
       <div className="mb-10 flex items-center justify-between">
         <div className="flex items-end gap-8">
-          <h2 className="font-display text-2xl font-black uppercase tracking-tight text-primary md:text-3xl">
+          <h2 className="font-display text-2xl font-semibold uppercase tracking-tight text-primary md:text-3xl">
             Recent Acquisitions
           </h2>
           <div className="hidden h-[2px] w-24 bg-acid md:block" />
@@ -66,7 +66,7 @@ export default function FeaturedProducts() {
 function EmptyState() {
   return (
     <div className="flex min-h-[280px] flex-col items-center justify-center gap-4 border border-hairline">
-      <span className="bg-acid px-3 py-1 font-display text-[10px] font-black uppercase tracking-widest text-black">
+      <span className="bg-primary px-3 py-1 font-display text-[10px] font-semibold uppercase tracking-widest text-base">
         Coming Soon
       </span>
       <p className="font-display text-xs uppercase tracking-widest text-secondary">

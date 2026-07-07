@@ -26,11 +26,11 @@ export default function CartLine({ line }) {
       {/* Details. */}
       <div className="min-w-0 flex flex-col gap-1">
         {badge && (
-          <span className="inline-block w-fit bg-acid px-2 py-0.5 font-display text-[8px] font-black uppercase tracking-widest text-black">
+          <span className="inline-block w-fit bg-primary px-2 py-0.5 font-display text-[8px] font-semibold uppercase tracking-widest text-base">
             {badge}
           </span>
         )}
-        <p className="font-display text-sm font-black uppercase leading-tight tracking-tight text-primary">
+        <p className="font-display text-sm font-semibold uppercase leading-tight tracking-tight text-primary">
           {title}
         </p>
         <p className="font-display text-[10px] uppercase tracking-wider text-secondary">
@@ -47,7 +47,7 @@ export default function CartLine({ line }) {
       />
 
       {/* Price. */}
-      <p className="min-w-[4rem] text-right font-display text-sm font-black text-primary tabular-nums">
+      <p className="min-w-[4rem] text-right font-display text-sm font-semibold text-primary tabular-nums">
         {fmt(price * qty, currencyCode)}
       </p>
 

@@ -9,7 +9,7 @@ import { shopifyImg, shopifySrcSet, markLoaded, onImgLoad } from '../lib/shopify
   Tags: 'new-drop' → NEW DROP, 'restocked' → RESTOCKED, 'sold-out' → SOLD OUT (diagonal).
 */
 const BADGE_MAP = {
-  'new-drop': { label: 'New Drop', style: 'bg-acid text-black' },
+  'new-drop': { label: 'New Drop', style: 'bg-primary text-base' },
   restocked: { label: 'Restocked', style: 'bg-white text-black' },
   'sold-out': { label: 'Sold Out', style: 'bg-[#1c1c1c] text-white/60' },
 };
@@ -94,7 +94,7 @@ export default function ProductCard({ product, listName = 'product_list', positi
 
         {/* Status badge. */}
         {badge && (
-          <div className={`absolute left-3 top-3 px-2 py-1 font-display text-[9px] font-black uppercase tracking-widest ${badge.style}`}>
+          <div className={`absolute left-3 top-3 px-2 py-1 font-display text-[9px] font-semibold uppercase tracking-widest ${badge.style}`}>
             {badge.label}
           </div>
         )}
@@ -102,7 +102,7 @@ export default function ProductCard({ product, listName = 'product_list', positi
         {/* Sold-out overlay. */}
         {soldOut && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <span className="font-display text-xs font-black uppercase tracking-widest text-white/70">
+            <span className="font-display text-xs font-semibold uppercase tracking-widest text-white/70">
               Sold Out
             </span>
           </div>
@@ -111,7 +111,7 @@ export default function ProductCard({ product, listName = 'product_list', positi
 
       {/* Info. */}
       <div className="flex flex-col gap-1 p-4">
-        <p className="font-display text-sm font-black uppercase leading-tight tracking-tight text-primary transition-colors group-hover:text-acid">
+        <p className="font-display text-sm font-semibold uppercase leading-tight tracking-tight text-primary transition-colors group-hover:text-acid">
           {title}
         </p>
         {price && (

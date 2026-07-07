@@ -12,7 +12,7 @@ export default function Accordion({ items = [] }) {
             onClick={() => setOpen(open === i ? null : i)}
             className="flex w-full items-center justify-between py-4 text-left"
           >
-            <span className="font-display text-[11px] font-black uppercase tracking-widest text-primary">
+            <span className="font-display text-[11px] font-semibold uppercase tracking-widest text-primary">
               {item.label}
             </span>
             <svg

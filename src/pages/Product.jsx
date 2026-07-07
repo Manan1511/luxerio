@@ -75,7 +75,7 @@ export default function Product() {
 
   if (isError || !product) return (
     <div className="mx-auto max-w-[1280px] px-6 py-24 text-center lg:px-16">
-      <span className="bg-acid px-3 py-1 font-display text-[10px] font-black uppercase tracking-widest text-black">
+      <span className="bg-primary px-3 py-1 font-display text-[10px] font-semibold uppercase tracking-widest text-base">
         Not Found
       </span>
       <p className="mt-6 font-display text-xs uppercase tracking-widest text-secondary">
@@ -105,19 +105,19 @@ export default function Product() {
           <div className="flex flex-col gap-6">
             {/* Badge. */}
             {product.tags?.includes('new-drop') && (
-              <span className="inline-block w-fit bg-acid px-3 py-1 font-display text-[9px] font-black uppercase tracking-widest text-black">
+              <span className="inline-block w-fit bg-primary px-3 py-1 font-display text-[9px] font-semibold uppercase tracking-widest text-base">
                 New Drop
               </span>
             )}
 
             {/* Title. */}
-            <h1 className="font-display text-3xl font-black uppercase leading-tight tracking-tight text-primary break-words md:text-4xl">
+            <h1 className="font-display text-3xl font-semibold uppercase leading-tight tracking-tight text-primary break-words md:text-4xl">
               {product.title}
             </h1>
 
             {/* Price. */}
             {price && (
-              <p className="font-display text-2xl font-black text-acid">
+              <p className="font-display text-2xl font-semibold text-acid">
                 {fmt(price.amount, price.currencyCode)}
               </p>
             )}
@@ -145,12 +145,12 @@ export default function Product() {
                 type="button"
                 onClick={handleAddToBag}
                 disabled={soldOut || !selected}
-                className={`flex w-full items-center justify-center gap-3 py-4 font-display text-sm font-black uppercase tracking-widest transition-colors active:scale-[0.98]
+                className={`flex w-full items-center justify-center gap-3 py-4 font-display text-sm font-semibold uppercase tracking-widest transition-colors active:scale-[0.98]
                   ${soldOut
                     ? 'cursor-not-allowed bg-elevated text-secondary'
                     : addedMsg
-                    ? 'bg-acid text-black'
-                    : 'bg-primary text-base hover:bg-acid hover:text-black'
+                    ? 'bg-primary text-base'
+                    : 'bg-primary text-base hover:opacity-80'
                   }`}
               >
                 {addedMsg ? (
