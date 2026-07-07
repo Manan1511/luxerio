@@ -5,9 +5,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Brand constants — NEVER themed.
-        acid: 'var(--brand-acid)',
+        // Brand constants — never themed.
         gold: 'var(--brand-gold)',
+        sale: 'var(--sale-red)',
+        // Legacy accent alias — DOES flip per theme now (see index.css).
+        acid: 'var(--brand-acid)',
         // Semantic tokens — flip per theme (see index.css).
         base: 'var(--bg-base)',
         surface: 'var(--bg-surface)',

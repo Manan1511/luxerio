@@ -3,32 +3,35 @@
 @tailwind utilities;
 
 /*
-  Token system.
-  - Brand constants (acid green, logo gold) NEVER change across themes.
-  - Semantic tokens flip between dark/light via the `.dark` class on <html>.
+  Token system — pronk-style monochrome.
+  - `--brand-acid` is the legacy accent alias: now monochrome (near-black in
+    light, white in dark) so every existing `text-acid`/`bg-acid` usage renders
+    as pronk-style black/white without touching 27 files.
+  - Gold stays logo-only. Red is for sale pricing only.
+  - Semantic tokens flip via the `.dark` class on <html>.
 */
 :root {
-  /* Brand constants — confirm exact hex from Figma variables on next pass. */
-  --brand-acid: #c6f500; /* neon green strips / active / price */
-  --brand-gold: #c9a227; /* logo mark accent only */
+  --brand-acid: #111111;   /* legacy accent alias — monochrome now */
+  --brand-gold: #c9a227;   /* logo mark accent only */
+  --sale-red: #e53935;     /* sale price + Save % only */
 
-  /* Light mode (improvised — off-white + cool gray, keep acid + black). */
-  --bg-base: #f4f3ef;
-  --bg-surface: #ffffff;
-  --bg-elevated: #ecece8;
-  --text-primary: #0a0a0a;
-  --text-secondary: #5a5a5a;
-  --border-hairline: rgba(0, 0, 0, 0.1);
+  /* Light mode (default) — pronk white minimal. */
+  --bg-base: #ffffff;
+  --bg-surface: #fafafa;
+  --bg-elevated: #f0f0f0;
+  --text-primary: #111111;
+  --text-secondary: #6b6b6b;
+  --border-hairline: rgba(0, 0, 0, 0.08);
 }
 
 .dark {
-  /* Dark mode (from NEO-INDUSTRIAL frames). */
-  --bg-base: #0a0a0a;
-  --bg-surface: #141414;
-  --bg-elevated: #1c1c1c;
+  --brand-acid: #f5f5f5;
+  --bg-base: #0f0f0f;
+  --bg-surface: #171717;
+  --bg-elevated: #1f1f1f;
   --text-primary: #f5f5f5;
-  --text-secondary: #8a8a8a;
-  --border-hairline: rgba(255, 255, 255, 0.08);
+  --text-secondary: #9a9a9a;
+  --border-hairline: rgba(255, 255, 255, 0.1);
 }
 
 html {
@@ -52,7 +55,7 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Scrollbar styling — matches dark design language */
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 3px;
   height: 3px;
@@ -61,13 +64,13 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--brand-acid);
+  background: var(--text-secondary);
   border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-acid);
+  background: var(--text-secondary);
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--brand-acid) transparent;
+  scrollbar-color: var(--text-secondary) transparent;
 }
