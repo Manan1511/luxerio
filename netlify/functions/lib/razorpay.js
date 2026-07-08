@@ -9,10 +9,19 @@ function authHeader() {
   return `Basic ${creds}`;
 }
 
-export async function createRazorpayOrder({ amountPaise, receipt, notes }) {
+// `idempotencyKey`, when provided, stops a client retry/double-click from
+// creating two Razorpay orders for the same checkout attempt (Razorpay returns
+// the original order instead). It must be the SAME value across retries of one
+// attempt and a NEW value for a genuinely new checkout — that requires the
+// frontend to mint one key per attempt and resend it on retry, which is wired
+// up in the /checkout page (later task), not here. Safe to omit for now: each
+// call just creates a fresh order, same as today.
+export async function createRazorpayOrder({ amountPaise, receipt, notes, idempotencyKey }) {
+  const headers = { Authorization: authHeader(), 'Content-Type': 'application/json' };
+  if (idempotencyKey) headers['X-Razorpay-Idempotency-Key'] = idempotencyKey;
   const res = await fetch(`${RZP_BASE}/orders`, {
     method: 'POST',
-    headers: { Authorization: authHeader(), 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({ amount: amountPaise, currency: 'INR', receipt, notes }),
   });
   const data = await res.json();
