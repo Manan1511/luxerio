@@ -5,20 +5,13 @@ import { shopifyImg, shopifySrcSet, markLoaded, onImgLoad } from '../lib/shopify
 
 /*
   Shared product card — used in FeaturedProducts (Home) and ProductGrid (Shop All).
-  Variant badge: inferred from Shopify `tags` array.
-  Tags: 'new-drop' → NEW DROP, 'restocked' → RESTOCKED, 'sold-out' → SOLD OUT (diagonal).
+  New Arrival badge: inferred from Shopify `createdAt` (within NEW_ARRIVAL_DAYS).
 */
-const BADGE_MAP = {
-  'new-drop': { label: 'New Drop', style: 'bg-primary text-base' },
-  restocked: { label: 'Restocked', style: 'bg-white text-black' },
-  'sold-out': { label: 'Sold Out', style: 'bg-[#1c1c1c] text-white/60' },
-};
+const NEW_ARRIVAL_DAYS = 30;
 
-function getBadge(tags = []) {
-  for (const [key, val] of Object.entries(BADGE_MAP)) {
-    if (tags.includes(key)) return val;
-  }
-  return null;
+function isNewArrival(createdAt) {
+  if (!createdAt) return false;
+  return Date.now() - new Date(createdAt).getTime() < NEW_ARRIVAL_DAYS * 24 * 60 * 60 * 1000;
 }
 
 function fmt(amount, currencyCode = 'USD') {
@@ -30,10 +23,10 @@ export default function ProductCard({ product, listName = 'product_list', positi
   const [altLoaded, setAltLoaded] = useState(false);
   if (!product) return <ProductCardSkeleton />;
 
-  const { handle, title, featuredImage, images, priceRange, tags = [], variants } = product;
+  const { handle, title, featuredImage, images, priceRange, variants } = product;
   const price = priceRange?.minVariantPrice;
-  const badge = getBadge(tags);
-  const soldOut = tags.includes('sold-out') || variants?.edges?.[0]?.node?.availableForSale === false;
+  const newArrival = isNewArrival(product.createdAt);
+  const soldOut = variants?.edges?.[0]?.node?.availableForSale === false;
   const aboveFold = position != null && position < 6;
 
   // Second product image for the hover swap — skip if it's the same as the featured one.
@@ -92,10 +85,10 @@ export default function ProductCard({ product, listName = 'product_list', positi
           />
         )}
 
-        {/* Status badge. */}
-        {badge && (
-          <div className={`absolute left-3 top-3 px-2 py-1 font-display text-[9px] font-semibold uppercase tracking-widest ${badge.style}`}>
-            {badge.label}
+        {/* New Arrival badge. */}
+        {newArrival && (
+          <div className="absolute left-3 top-3 bg-primary px-2.5 py-1 font-display text-[9px] font-semibold uppercase tracking-[0.15em] text-base">
+            New Arrival
           </div>
         )}
 
@@ -111,18 +104,29 @@ export default function ProductCard({ product, listName = 'product_list', positi
 
       {/* Info. */}
       <div className="flex flex-col gap-1 p-4">
-        <p className="font-display text-sm font-semibold uppercase leading-tight tracking-tight text-primary transition-colors group-hover:text-acid">
+        <p className="font-display text-[13px] font-medium uppercase tracking-[0.08em] leading-snug text-primary">
           {title}
         </p>
-        {price && (
-          <p className="font-display text-sm font-bold text-acid">
-            {fmt(price.amount, price.currencyCode)}
-          </p>
-        )}
+        {price && (() => {
+          const amount = parseFloat(price.amount);
+          const compareAt = parseFloat(product.compareAtPriceRange?.minVariantPrice?.amount ?? 0);
+          const onSale = compareAt > amount;
+          const savePct = onSale ? Math.round((1 - amount / compareAt) * 100) : 0;
+          return (
+            <p className="flex flex-wrap items-baseline gap-x-2 font-sans text-sm text-primary">
+              {onSale && (
+                <span className="sr-only">Regular price</span>
+              )}
+              {onSale && (
+                <span className="text-secondary line-through">{fmt(compareAt, price.currencyCode)}</span>
+              )}
+              {onSale && <span className="sr-only">Sale price</span>}
+              <span className="font-medium">{fmt(amount, price.currencyCode)}</span>
+              {onSale && <span className="text-xs font-medium text-sale">Save {savePct}%</span>}
+            </p>
+          );
+        })()}
       </div>
-
-      {/* Hover acid bottom border. */}
-      <div className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-acid transition-transform duration-300 group-hover:scale-x-100" />
     </Link>
   );
 }
