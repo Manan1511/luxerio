@@ -2,6 +2,15 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from '@phosphor-icons/react';
 import { trackEvent, EVENTS } from '../lib/analytics/ga4.js';
 
+/*
+  Hero copy — client-editable constants, same pattern as AnnouncementBar's
+  ANNOUNCEMENT_TEXT. Heading is two lines by design (see the <br/> below).
+*/
+export const HERO_EYEBROW = 'New Drop / FW25';
+export const HERO_HEADING_LINE_1 = 'New Season';
+export const HERO_HEADING_LINE_2 = 'Essentials';
+export const HERO_CTA_LABEL = 'Shop Now';
+
 export default function Hero({ heroBg }) {
   const handleCta = () => {
     trackEvent(EVENTS.SELECT_PROMOTION, {
@@ -12,62 +21,33 @@ export default function Hero({ heroBg }) {
 
   return (
     <section
-      className={`relative min-h-[100dvh] w-full overflow-hidden${heroBg ? ' bg-cover bg-center' : ''}`}
+      className={`relative min-h-[60vh] w-full overflow-hidden bg-cover bg-center ${heroBg ? '' : 'bg-[#0a0a0a]'}`}
       style={heroBg ? { backgroundImage: `url(${heroBg})` } : undefined}
     >
-      {!heroBg && <div className="absolute inset-0 bg-[#0a0a0a]" />}
+      {/* Scrim for text legibility over photo — no-op visually when there's no
+          image, since the fallback bg above is already dark enough for white text. */}
+      <div className="absolute inset-0 bg-black/30" />
 
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(198,245,0,0.6) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(198,245,0,0.6) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-        }}
-      />
-
-      {heroBg && <div className="absolute inset-0 bg-black/60" />}
-
-      <div className="relative z-10 flex h-full min-h-[100dvh] flex-col justify-end px-6 pb-20 lg:px-16">
-        <span className="mb-6 inline-flex w-fit items-center bg-primary px-3 py-1">
-          <span className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-base">
-            New Drop / FW25
-          </span>
-        </span>
-
-        <h1 className="max-w-3xl font-display text-[clamp(3.5rem,10vw,8rem)] font-semibold uppercase leading-[0.9] tracking-tight text-white">
-          New
-          <br />
-          Drop
-        </h1>
-
-        <p className="mt-6 max-w-sm text-xs uppercase tracking-[0.15em] text-white/60">
-          Engineered for the uncompromising.
-          <br />
-          Technical apparel for urban tactics.
+      <div className="relative z-10 flex min-h-[60vh] flex-col items-start justify-end px-6 pb-14 lg:px-16">
+        <p className="mb-3 font-display text-[11px] font-semibold uppercase tracking-[0.25em] text-white/80">
+          {HERO_EYEBROW}
         </p>
-
-        <div className="mt-8 flex flex-wrap gap-4">
+        <h1 className="max-w-2xl font-display text-4xl font-semibold uppercase tracking-[0.06em] text-white md:text-6xl">
+          {HERO_HEADING_LINE_1}
+          <br />
+          {HERO_HEADING_LINE_2}
+        </h1>
+        <div className="mt-7">
           <Link
             to="/shop"
             onClick={handleCta}
-            className="inline-flex items-center gap-3 border border-white/20 bg-white/10 px-6 py-3 font-display text-xs font-bold uppercase tracking-widest text-white backdrop-blur transition-colors hover:border-primary hover:bg-primary hover:text-base active:scale-[0.98]"
+            className="inline-flex items-center gap-3 bg-white px-7 py-3.5 font-display text-xs font-semibold uppercase tracking-[0.2em] text-black transition-opacity hover:opacity-85 active:scale-[0.98]"
           >
-            Access Season
+            {HERO_CTA_LABEL}
             <ArrowRight size={14} weight="bold" />
-          </Link>
-          <Link
-            to="/shop"
-            className="inline-flex items-center gap-3 px-6 py-3 font-display text-xs font-bold uppercase tracking-widest text-white/60 transition-colors hover:text-acid active:scale-[0.98]"
-          >
-            View All
           </Link>
         </div>
       </div>
-
-      <div className="absolute bottom-0 left-0 h-[2px] w-full bg-acid" />
     </section>
   );
 }
