@@ -35,7 +35,8 @@ export const CATEGORY_OPTIONS = [
 ];
 
 // Maps URL-safe category values to exact Shopify product tag strings.
-const CATEGORY_TAG_MAP = {
+// Frozen: exported for reuse, must not be mutated by consumers.
+export const CATEGORY_TAG_MAP = Object.freeze({
   "t-shirts":      "T-Shirts",
   "shirts":        "Shirts",
   "jeans":         "Jeans",
@@ -45,7 +46,7 @@ const CATEGORY_TAG_MAP = {
   "watches-men":   "Watches for Men",
   "watches-women": "Watches for Women",
   "sunglasses":    "Sunglasses",
-};
+});
 
 // ── Size option groups (UI value === exact Shopify variant Size value) ──
 

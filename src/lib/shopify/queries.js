@@ -1,5 +1,7 @@
 const PRODUCT_FIELDS = /* GraphQL */ `
   id handle title tags productType
+  createdAt
+  compareAtPriceRange { minVariantPrice { amount currencyCode } }
   featuredImage { url altText }
   images(first: 2) { edges { node { url altText } } }
   priceRange { minVariantPrice { amount currencyCode } }
@@ -67,6 +69,8 @@ export const FEATURED_PRODUCTS_QUERY = /* GraphQL */ `
           title
           description
           tags
+          createdAt
+          compareAtPriceRange { minVariantPrice { amount currencyCode } }
           featuredImage { url altText }
           images(first: 2) { edges { node { url altText } } }
           priceRange { minVariantPrice { amount currencyCode } }
@@ -85,6 +89,8 @@ export const PRODUCT_RECOMMENDATIONS_QUERY = /* GraphQL */ `
       id
       handle
       title
+      createdAt
+      compareAtPriceRange { minVariantPrice { amount currencyCode } }
       featuredImage { url altText }
       images(first: 2) { edges { node { url altText } } }
       priceRange { minVariantPrice { amount currencyCode } }
