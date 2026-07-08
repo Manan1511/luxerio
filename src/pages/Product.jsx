@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Check, ShieldCheck, Lightning } from '@phosphor-icons/react';
 import { useProduct, useProductRecommendations } from '../lib/shopify/hooks.js';
 import { useCart } from '../context/CartContext.jsx';
-import { storefrontQuery } from '../lib/shopify/client.js';
-import { CART_CREATE } from '../lib/shopify/mutations.js';
+import { startCheckout, toCheckoutLine } from '../lib/checkout/session.js';
 import Gallery from '../components/Gallery.jsx';
 import VariantSelector from '../components/VariantSelector.jsx';
 import Accordion from '../components/Accordion.jsx';
@@ -18,6 +17,7 @@ function fmt(amount, currencyCode = 'USD') {
 
 export default function Product() {
   const { handle } = useParams();
+  const navigate = useNavigate();
   const { data: product, isLoading, isError } = useProduct(handle);
   const { data: recommendations = [] } = useProductRecommendations(product?.id);
   const { addLine, count } = useCart();
@@ -28,8 +28,6 @@ export default function Product() {
 
   const [selected, setSelected]   = useState(null);
   const [addedMsg, setAddedMsg]   = useState(false);
-  const [buying, setBuying]       = useState(false);
-  const [buyError, setBuyError]   = useState(null);
 
   // Default to first available variant.
   useEffect(() => {
@@ -60,35 +58,24 @@ export default function Product() {
     setTimeout(() => setAddedMsg(false), 2000);
   };
 
-  // Buy Now: separate one-item cart straight to Shopify checkout.
+  // Buy Now: pre-load a single-line checkout session and navigate to /checkout.
   // Deliberately does NOT touch the persistent bag cart (localStorage id stays).
-  const handleBuyNow = async () => {
-    if (!selected || buying) return;
-    setBuying(true);
-    setBuyError(null);
+  const handleBuyNow = () => {
+    if (!selected || !product) return;
     trackEvent(EVENTS.BEGIN_CHECKOUT, {
       value: parseFloat(selected.price?.amount ?? 0),
       currency: selected.price?.currencyCode,
       items: [{ item_id: selected.id, item_name: product.title, price: parseFloat(selected.price?.amount ?? 0) }],
     });
-    try {
-      const d = await storefrontQuery(CART_CREATE, {
-        lines: [{ merchandiseId: selected.id, quantity: 1 }],
-      });
-      const userErrors = d.cartCreate?.userErrors;
-      const url = d.cartCreate?.cart?.checkoutUrl;
-      if (url) {
-        window.location.href = url;
-        return; // navigating away — leave button in loading state
-      }
-      console.error('[Vancito] Buy Now failed:', userErrors ?? d);
-      setBuyError('Could not start checkout. Please try again.');
-      setBuying(false);
-    } catch (err) {
-      console.error('[Vancito] Buy Now request failed:', err);
-      setBuyError('Could not start checkout. Please try again.');
-      setBuying(false);
-    }
+    startCheckout({
+      lines: [toCheckoutLine({
+        variantId: selected.id, quantity: 1,
+        title: product.title, variant: selected.title,
+        price: parseFloat(selected.price?.amount ?? 0), image: images[0]?.url,
+      })],
+      source: 'buy-now',
+    });
+    navigate('/checkout');
   };
 
   const soldOut = selected ? !selected.availableForSale : false;
@@ -179,22 +166,16 @@ export default function Product() {
               <button
                 type="button"
                 onClick={handleBuyNow}
-                disabled={soldOut || !selected || buying}
+                disabled={soldOut || !selected}
                 className="flex w-full items-center justify-center gap-3 bg-primary py-4 font-display text-sm font-semibold uppercase tracking-[0.2em] text-base transition-opacity hover:opacity-85 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
               >
-                {buying ? 'Redirecting…' : soldOut ? 'Sold Out' : (<><Lightning size={16} weight="fill" /> Buy Now</>)}
+                {soldOut ? 'Sold Out' : (<><Lightning size={16} weight="fill" /> Buy Now</>)}
               </button>
-
-              {buyError && (
-                <p className="text-center font-display text-[11px] uppercase tracking-wider text-sale">
-                  {buyError}
-                </p>
-              )}
 
               <button
                 type="button"
                 onClick={handleAddToBag}
-                disabled={soldOut || !selected || buying}
+                disabled={soldOut || !selected}
                 className={`flex w-full items-center justify-center gap-3 border py-4 font-display text-sm font-semibold uppercase tracking-[0.2em] transition-colors active:scale-[0.98] ${
                   soldOut
                     ? 'cursor-not-allowed border-hairline text-secondary opacity-50'
@@ -208,7 +189,7 @@ export default function Product() {
 
               <p className="flex items-center justify-center gap-2 text-center font-display text-[10px] uppercase tracking-widest text-secondary">
                 <ShieldCheck size={12} weight="regular" />
-                Free expedited shipping on orders over $100
+                Free shipping across India
               </p>
             </div>
 

@@ -8,6 +8,7 @@ import {
   CART_DISCOUNT_CODES_UPDATE,
 } from '../lib/shopify/mutations.js';
 import { trackEvent, EVENTS } from '../lib/analytics/ga4.js';
+import { startCheckout, toCheckoutLine } from '../lib/checkout/session.js';
 
 const CartContext = createContext(null);
 const CART_ID_KEY = 'vancito-cart-id';
@@ -160,14 +161,32 @@ export function CartProvider({ children }) {
       currency: cost?.currencyCode,
       items: lines.map((l, i) => ({ item_id: l.merchandiseId, item_name: l.title, index: i, price: l.price })),
     });
-    if (checkoutUrl) window.location.href = checkoutUrl;
-  }, [checkoutUrl, cost, lines]);
+    startCheckout({
+      lines: lines.map((l) => toCheckoutLine({
+        variantId: l.merchandiseId, quantity: l.qty,
+        title: l.title, variant: l.variant, price: l.price, image: l.image,
+      })),
+      source: 'cart',
+    });
+    window.location.assign('/checkout');
+  }, [cost, lines]);
+
+  // Empty the persistent bag locally after a confirmed cart-source order.
+  // No Shopify API call — the abandoned cart object is left as-is server-side.
+  const clearBag = useCallback(() => {
+    localStorage.removeItem(CART_ID_KEY);
+    setCartId(null);
+    setCheckout(null);
+    setLines([]);
+    setCost(null);
+    setDiscounts([]);
+  }, []);
 
   const value = useMemo(() => {
     const count = lines.reduce((n, l) => n + l.qty, 0);
     const subtotal = cost?.subtotal ?? lines.reduce((s, l) => s + l.price * l.qty, 0);
-    return { lines, addLine, updateQty, removeLine, applyDiscount, initiateCheckout, count, subtotal, cost, discountCodes, checkoutUrl, loading };
-  }, [lines, addLine, updateQty, removeLine, applyDiscount, initiateCheckout, cost, discountCodes, checkoutUrl, loading]);
+    return { lines, addLine, updateQty, removeLine, applyDiscount, initiateCheckout, clearBag, count, subtotal, cost, discountCodes, checkoutUrl, loading };
+  }, [lines, addLine, updateQty, removeLine, applyDiscount, initiateCheckout, clearBag, cost, discountCodes, checkoutUrl, loading]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
