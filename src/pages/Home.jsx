@@ -1,3 +1,4 @@
+import StoryBubbles from '../components/StoryBubbles.jsx';
 import Hero from '../components/Hero.jsx';
 import CategoryBento from '../components/CategoryBento.jsx';
 import FeaturedProducts from '../components/FeaturedProducts.jsx';
@@ -12,9 +13,10 @@ import FeaturedProducts from '../components/FeaturedProducts.jsx';
 export default function Home() {
   return (
     <>
-      <Hero heroBg="https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=1920&q=80&auto=format&fit=crop" />
-      <CategoryBento />
+      <StoryBubbles />
+      <Hero heroBg="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1920&q=80&auto=format&fit=crop" />
       <FeaturedProducts />
+      <CategoryBento />
     </>
   );
 }
