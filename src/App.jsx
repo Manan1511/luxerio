@@ -9,6 +9,10 @@ import Account from './pages/Account.jsx';
 import Categories from './pages/Categories.jsx';
 import Checkout from './pages/Checkout.jsx';
 import OrderConfirmed from './pages/OrderConfirmed.jsx';
+import PrivacyPolicy from './pages/legal/PrivacyPolicy.jsx';
+import TermsAndConditions from './pages/legal/TermsAndConditions.jsx';
+import RefundPolicy from './pages/legal/RefundPolicy.jsx';
+import ShippingPolicy from './pages/legal/ShippingPolicy.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { trackPageView } from './lib/analytics/ga4.js';
 
@@ -33,6 +37,10 @@ export default function App() {
           <Route path="/categories" element={<ErrorBoundary><Categories /></ErrorBoundary>} />
           <Route path="/checkout" element={<ErrorBoundary><Checkout /></ErrorBoundary>} />
           <Route path="/order-confirmed" element={<ErrorBoundary><OrderConfirmed /></ErrorBoundary>} />
+          <Route path="/privacy-policy" element={<ErrorBoundary><PrivacyPolicy /></ErrorBoundary>} />
+          <Route path="/terms-conditions" element={<ErrorBoundary><TermsAndConditions /></ErrorBoundary>} />
+          <Route path="/refund-policy" element={<ErrorBoundary><RefundPolicy /></ErrorBoundary>} />
+          <Route path="/shipping-policy" element={<ErrorBoundary><ShippingPolicy /></ErrorBoundary>} />
         </Routes>
       </ErrorBoundary>
     </Layout>
