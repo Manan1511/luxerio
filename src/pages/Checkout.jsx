@@ -46,6 +46,17 @@ const INDIAN_STATES = [
   { code: 'WB', label: 'West Bengal' },
 ];
 
+// Netlify dev/cold-start can return an empty or truncated body — fall back to
+// a friendly message instead of letting res.json() throw a raw parse error.
+async function parseJsonResponse(res) {
+  const text = await res.text();
+  try {
+    return text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error('Something went wrong on our end — please try again.');
+  }
+}
+
 let razorpayScriptPromise = null;
 
 function loadRazorpayScript() {
@@ -137,9 +148,10 @@ export default function Checkout() {
       };
       const res = await fetch('/.netlify/functions/create-payment', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(checkoutPayload),
       });
-      const data = await res.json();
+      const data = await parseJsonResponse(res);
       if (!res.ok) throw new Error(data.error || 'Could not start payment');
 
       await loadRazorpayScript();
@@ -151,19 +163,26 @@ export default function Checkout() {
         name: 'Vancito.co',
         prefill: { name: `${form.firstName} ${form.lastName}`, email: form.email, contact: form.phone },
         theme: { color: '#111111' },
+        remember_customer: false,
         modal: { ondismiss: () => setPaying(false) },
         handler: async (rsp) => {
-          const confirmRes = await fetch('/.netlify/functions/confirm-order', {
-            method: 'POST',
-            body: JSON.stringify({ ...rsp, checkout: checkoutPayload }),
-          });
-          const confirm = await confirmRes.json();
-          if (confirmRes.ok) {
-            navigate(`/order-confirmed?n=${encodeURIComponent(confirm.orderNumber)}&src=${session.source}`);
-          } else if (confirm.error === 'ORDER_PENDING') {
-            navigate(`/order-confirmed?pending=1&src=${session.source}`);
-          } else {
-            setPayError('Payment verification failed. If you were charged, contact support with your payment reference.');
+          try {
+            const confirmRes = await fetch('/.netlify/functions/confirm-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...rsp, checkout: checkoutPayload }),
+            });
+            const confirm = await parseJsonResponse(confirmRes);
+            if (confirmRes.ok) {
+              navigate(`/order-confirmed?n=${encodeURIComponent(confirm.orderNumber)}&src=${session.source}`);
+            } else if (confirm.error === 'ORDER_PENDING') {
+              navigate(`/order-confirmed?pending=1&src=${session.source}`);
+            } else {
+              setPayError('Payment verification failed. If you were charged, contact support with your payment reference.');
+              setPaying(false);
+            }
+          } catch {
+            setPayError('Payment received but confirmation failed. If you were charged, contact support with your payment reference — do not pay again.');
             setPaying(false);
           }
         },

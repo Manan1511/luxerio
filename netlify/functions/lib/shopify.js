@@ -128,10 +128,10 @@ export async function findOrderByRzpId(razorpayOrderId) {
   return node ? { orderId: node.id, orderNumber: node.name } : null;
 }
 
-// NOTE: the exact `orderCreate` input shape below (especially the discount field name —
-// `itemFixedDiscountCode` is a best-guess against the 2024-10 schema, not yet verified live)
-// MUST be validated against the live Admin API schema in a later task (Task 6, blocked on
-// credentials) before the first real call.
+// Verified live against the 2024-10 Admin API schema via introspection (Task 6,
+// Step 1) — every field name below (variantId/quantity, provinceCode,
+// itemFixedDiscountCode.code/amountSet, transaction kind/status enums, IN/INR
+// enum values) matches OrderCreateOrderInput and its nested input types exactly.
 export async function createPaidOrder({ payload, razorpayOrderId, razorpayPaymentId, totalRupees, discount }) {
   const input = {
     lineItems: payload.lines.map((l) => ({ variantId: l.variantId, quantity: l.quantity })),
@@ -149,6 +149,9 @@ export async function createPaidOrder({ payload, razorpayOrderId, razorpayPaymen
     },
     tags: [`rzp_${razorpayOrderId}`],
     note: `Razorpay payment: ${razorpayPaymentId}${discount ? ` | code ${discount.code} (-₹${discount.amountOff})` : ''}`,
+    // Explicit, not inferred from the transaction alone — confirmed PAID is a
+    // valid OrderCreateFinancialStatus value via live schema introspection.
+    financialStatus: 'PAID',
     transactions: [{ kind: 'SALE', status: 'SUCCESS', gateway: 'Razorpay',
       amountSet: { shopMoney: { amount: String(totalRupees), currencyCode: 'INR' } } }],
   };
