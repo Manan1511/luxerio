@@ -63,7 +63,7 @@ export default function CategoryBento() {
 
             {/* Pronk-style bottom-left label. */}
             <div className="absolute bottom-0 left-0 right-0 p-5">
-              <p className="font-display text-sm font-semibold uppercase tracking-[0.25em] text-white md:text-base">
+              <p className="font-display text-sm font-semibold uppercase tracking-[0.25em] text-white dark:text-white md:text-base">
                 {cat.label}
               </p>
             </div>
