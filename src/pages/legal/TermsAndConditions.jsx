@@ -12,8 +12,8 @@ export default function TermsAndConditions() {
       <Section heading="1. About us">
         <p>
           Vancito.co is an online store selling apparel, footwear, and accessories, operated by{' '}
-          <span className="text-primary">[legal business name]</span>, registered at{' '}
-          <span className="text-primary">[registered business address]</span>. For any queries,
+          <span className="text-primary">Vancito.co</span>, registered at{' '}
+          <span className="text-primary">317, 3rd Floor, Joyos Hubtown, Near Adajan Bus Depot, Adajan Patia, Surat, Gujarat 395009</span>. For any queries,
           contact us at <span className="text-primary">help.vancitoco@gmail.com</span>.
         </p>
       </Section>
@@ -90,7 +90,7 @@ export default function TermsAndConditions() {
         <p>
           These Terms are governed by the laws of India. Any disputes arising from your use of the
           Site or an order shall be subject to the exclusive jurisdiction of the courts of{' '}
-          <span className="text-primary">[city, state]</span>.
+          <span className="text-primary">Surat, Gujarat</span>.
         </p>
       </Section>
 
