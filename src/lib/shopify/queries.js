@@ -61,7 +61,7 @@ export const SEARCH_PRODUCTS_QUERY = /* GraphQL */ `
 
 export const FEATURED_PRODUCTS_QUERY = /* GraphQL */ `
   query FeaturedProducts($first: Int = 4) {
-    products(first: $first, sortKey: CREATED_AT, reverse: true) {
+    products(first: $first, sortKey: BEST_SELLING, reverse: false) {
       edges {
         node {
           id
