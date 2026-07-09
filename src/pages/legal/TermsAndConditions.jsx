@@ -14,7 +14,7 @@ export default function TermsAndConditions() {
           Vancito.co is an online store selling apparel, footwear, and accessories, operated by{' '}
           <span className="text-primary">[legal business name]</span>, registered at{' '}
           <span className="text-primary">[registered business address]</span>. For any queries,
-          contact us at <span className="text-primary">[support email]</span>.
+          contact us at <span className="text-primary">help.vancitoco@gmail.com</span>.
         </p>
       </Section>
 
@@ -104,8 +104,8 @@ export default function TermsAndConditions() {
       <Section heading="11. Contact us">
         <p>
           Questions about these Terms? Reach us at{' '}
-          <span className="text-primary">[support email]</span> or{' '}
-          <span className="text-primary">[support phone number]</span>.
+          <span className="text-primary">help.vancitoco@gmail.com</span> or{' '}
+          <span className="text-primary">+91 78748 41121</span>.
         </p>
       </Section>
     </PolicyLayout>

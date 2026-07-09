@@ -48,7 +48,7 @@ export default function ShippingPolicy() {
           Please double-check your shipping address at checkout — we are not responsible for
           delays or non-delivery caused by an incorrect or incomplete address. If you notice an
           error shortly after placing your order, contact us immediately at{' '}
-          <span className="text-primary">[support email]</span> and we will do our best to update
+          <span className="text-primary">help.vancitoco@gmail.com</span> and we will do our best to update
           it before dispatch.
         </p>
       </Section>
@@ -56,7 +56,7 @@ export default function ShippingPolicy() {
       <Section heading="7. Damaged or missing items">
         <p>
           If your order arrives damaged, is missing items, or doesn't arrive at all within the
-          expected window, contact us at <span className="text-primary">[support email]</span>{' '}
+          expected window, contact us at <span className="text-primary">help.vancitoco@gmail.com</span>{' '}
           within 48 hours of the expected delivery date, along with your order number, so we can
           investigate with our courier partner and make it right.
         </p>
@@ -65,8 +65,8 @@ export default function ShippingPolicy() {
       <Section heading="8. Contact us">
         <p>
           Questions about a shipment? Reach us at{' '}
-          <span className="text-primary">[support email]</span> or{' '}
-          <span className="text-primary">[support phone number]</span> with your order number.
+          <span className="text-primary">help.vancitoco@gmail.com</span> or{' '}
+          <span className="text-primary">+91 78748 41121</span> with your order number.
         </p>
       </Section>
     </PolicyLayout>

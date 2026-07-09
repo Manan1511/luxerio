@@ -11,8 +11,8 @@ export default function RefundPolicy() {
       <Section heading="1. Order cancellation">
         <p>
           Orders can be cancelled free of charge only before they have been dispatched. To cancel
-          an order, contact us at <span className="text-primary">[support email]</span> or{' '}
-          <span className="text-primary">[support phone number]</span> as soon as possible after
+          an order, contact us at <span className="text-primary">help.vancitoco@gmail.com</span> or{' '}
+          <span className="text-primary">+91 78748 41121</span> as soon as possible after
           placing your order, quoting your order number. Once an order has been dispatched, it can
           no longer be cancelled — you may instead request a return once it is delivered (see
           Section 2).
@@ -27,7 +27,7 @@ export default function RefundPolicy() {
           <li>The item is unused, unworn, and returned in its original packaging with all tags attached.</li>
         </ul>
         <p>
-          To request a return, email <span className="text-primary">[support email]</span> with
+          To request a return, email <span className="text-primary">help.vancitoco@gmail.com</span> with
           your order number and photos of the item within 7 days of delivery. Once approved, we
           will share instructions for returning the item, including reverse pickup where
           available.
@@ -62,8 +62,8 @@ export default function RefundPolicy() {
       <Section heading="5. Contact us">
         <p>
           For any cancellation, return, or refund request, reach us at{' '}
-          <span className="text-primary">[support email]</span> or{' '}
-          <span className="text-primary">[support phone number]</span> with your order number.
+          <span className="text-primary">help.vancitoco@gmail.com</span> or{' '}
+          <span className="text-primary">+91 78748 41121</span> with your order number.
         </p>
       </Section>
     </PolicyLayout>

@@ -119,8 +119,8 @@ export default function PrivacyPolicy() {
       <Section heading="10. Contact us">
         <p>
           Questions about this Privacy Policy or how your data is handled? Reach us at{' '}
-          <span className="text-primary">[support email]</span> or{' '}
-          <span className="text-primary">[support phone number]</span>.
+          <span className="text-primary">help.vancitoco@gmail.com</span> or{' '}
+          <span className="text-primary">+91 78748 41121</span>.
         </p>
       </Section>
     </PolicyLayout>
