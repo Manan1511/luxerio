@@ -36,45 +36,54 @@ export default function ShopAll() {
 
   const sortConfig    = getSortConfig(urlSort);
   const shopifyQuery  = buildShopifyQuery({ categories: urlCategories, searchQuery: urlQuery });
-  const useSizeFilter = urlSizes.length > 0;
-  const sizeSearchParams = useSizeFilter ? buildSearchParams(urlCategories, urlSizes, urlQuery) : null;
+  // Route through the search endpoint whenever ANY filter (category or size)
+  // is active, not just size. Shopify's plain products(query: "tag:...") field
+  // fuzzy-tokenizes hyphenated tags once a non-default sortKey is applied —
+  // e.g. tag:"Shirts" + sortKey:CREATED_AT (our "Newest" default) incorrectly
+  // matches products tagged "T-Shirts" too, because "T-Shirts" tokenizes to
+  // include "Shirts". The search endpoint's structured query + RELEVANCE sort
+  // mapping (see getSearchSortKey) doesn't have this bug — verified directly
+  // against the Storefront API. Plain products() stays for the fully-
+  // unfiltered "browse everything" case, where there's no tag filter to corrupt.
+  const useSearchEndpoint = urlSizes.length > 0 || urlCategories.length > 0;
+  const searchParamsForQuery = useSearchEndpoint ? buildSearchParams(urlCategories, urlSizes, urlQuery) : null;
   const searchSortKey    = getSearchSortKey(urlSort);
 
   const [cursor, setCursor]           = useState(null);
   const [allProducts, setAll]         = useState([]);
   const [isFetchingMore, setFetchMore] = useState(false);
 
-  // Root products query (no size filter active)
+  // Root products query (no category/size filter active — nothing for the tag fuzzy-match bug to corrupt)
   const { data: productsData, isLoading: prodLoading, isFetching: prodFetching } = useProducts({
     first:   PAGE_SIZE,
     sortKey: sortConfig.sortKey,
     reverse: sortConfig.reverse,
     after:   cursor,
     query:   shopifyQuery,
-    enabled: !useSizeFilter,
+    enabled: !useSearchEndpoint,
   });
 
-  // Search query (size filter active — search endpoint supports productFilters)
+  // Search query (category and/or size filter active — search endpoint's tag matching is exact)
   const { data: searchData, isLoading: searchLoading, isFetching: searchFetching } = useSearchProducts({
-    query:          sizeSearchParams?.query,
+    query:          searchParamsForQuery?.query,
     first:          PAGE_SIZE,
     sortKey:        searchSortKey,
     reverse:        sortConfig.reverse,
     after:          cursor,
-    productFilters: sizeSearchParams?.productFilters,
-    enabled:        useSizeFilter,
+    productFilters: searchParamsForQuery?.productFilters,
+    enabled:        useSearchEndpoint,
   });
 
-  const data       = useSizeFilter ? searchData    : productsData;
-  const isLoading  = useSizeFilter ? searchLoading : prodLoading;
-  const isFetching = useSizeFilter ? searchFetching : prodFetching;
+  const data       = useSearchEndpoint ? searchData    : productsData;
+  const isLoading  = useSearchEndpoint ? searchLoading : prodLoading;
+  const isFetching = useSearchEndpoint ? searchFetching : prodFetching;
 
 
   useEffect(() => {
     setCursor(null);
     setAll([]);
     setFetchMore(false);
-  }, [shopifyQuery, urlSort, urlSizes.join(',')]);
+  }, [shopifyQuery, urlSort, urlSizes.join(','), urlCategories.join(',')]);
 
   useEffect(() => {
     if (!data?.edges) return;
@@ -89,11 +98,11 @@ export default function ShopAll() {
 
   useEffect(() => {
     if (!data?.pageInfo?.hasNextPage || !data?.pageInfo?.endCursor) return;
-    if (useSizeFilter) {
+    if (useSearchEndpoint) {
       prefetchSearchProducts(queryClient, {
-        query: sizeSearchParams?.query, first: PAGE_SIZE, sortKey: searchSortKey,
+        query: searchParamsForQuery?.query, first: PAGE_SIZE, sortKey: searchSortKey,
         reverse: sortConfig.reverse, after: data.pageInfo.endCursor,
-        productFilters: sizeSearchParams?.productFilters,
+        productFilters: searchParamsForQuery?.productFilters,
       });
     } else {
       prefetchProducts(queryClient, {
