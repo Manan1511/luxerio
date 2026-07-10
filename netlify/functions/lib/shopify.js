@@ -1,6 +1,31 @@
 const SHOP_DOMAIN = process.env.SHOPIFY_SHOP_DOMAIN || 'luxerio-62.myshopify.com';
 const API_VERSION = '2024-10';
 
+// The Admin API client-credentials grant issues short-lived tokens (~24h), not
+// a permanent static token — so we fetch and cache one in memory (per warm
+// function container) instead of trusting a fixed env var to stay valid.
+let _adminTokenCache = null; // { token, expiresAt }
+
+async function getAdminToken() {
+  const now = Date.now();
+  if (_adminTokenCache && _adminTokenCache.expiresAt - now > 60_000) {
+    return _adminTokenCache.token;
+  }
+  const res = await fetch(`https://${SHOP_DOMAIN}/admin/oauth/access_token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id: process.env.SHOPIFY_ADMIN_CLIENT_ID,
+      client_secret: process.env.SHOPIFY_ADMIN_CLIENT_SECRET,
+      grant_type: 'client_credentials',
+    }),
+  });
+  const data = await res.json();
+  if (!data.access_token) throw new Error(`Admin token fetch failed: ${JSON.stringify(data)}`);
+  _adminTokenCache = { token: data.access_token, expiresAt: now + data.expires_in * 1000 };
+  return _adminTokenCache.token;
+}
+
 // Parses a Shopify decimal amount string (e.g. "1234.50") into integer paise
 // without floating-point rounding error — string-split, not parseFloat.
 function toPaise(amountStr) {
@@ -11,10 +36,11 @@ function toPaise(amountStr) {
 }
 
 async function adminQuery(query, variables) {
+  const token = await getAdminToken();
   const res = await fetch(`https://${SHOP_DOMAIN}/admin/api/${API_VERSION}/graphql.json`, {
     method: 'POST',
     headers: {
-      'X-Shopify-Access-Token': process.env.SHOPIFY_ADMIN_TOKEN,
+      'X-Shopify-Access-Token': token,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ query, variables }),
