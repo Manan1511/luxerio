@@ -44,7 +44,7 @@ export async function handler(event) {
     const { total, discount } = await priceCart(payload.lines, payload.discountCode);
     const isCod = payload.paymentMethod === 'cod';
     const chargeRupees = isCod ? codAdvanceRupees(total) : total;
-    const codBalance = isCod ? total - chargeRupees : 0;
+    const codBalance = isCod ? Math.max(0, total - chargeRupees) : 0;
     const amountPaise = Math.round(chargeRupees * 100);
     if (!Number.isInteger(amountPaise) || amountPaise < 100) {
       return json(400, { error: 'Invalid order total' });
