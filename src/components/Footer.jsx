@@ -5,8 +5,6 @@ const LINKS = [
   { label: 'Terms', href: '/terms-conditions' },
   { label: 'Shipping', href: '/shipping-policy' },
   { label: 'Refunds', href: '/refund-policy' },
-  // No /stores page yet — leave unlinked until a store-locator page exists.
-  { label: 'Stores', href: null },
 ];
 
 export default function Footer() {
@@ -23,18 +21,12 @@ export default function Footer() {
         <ul className="flex flex-wrap gap-6">
           {LINKS.map((l) => (
             <li key={l.label}>
-              {l.href ? (
-                <Link
-                  to={l.href}
-                  className="font-display text-xs font-bold uppercase tracking-widest text-secondary hover:text-acid"
-                >
-                  {l.label}
-                </Link>
-              ) : (
-                <span className="font-display text-xs font-bold uppercase tracking-widest text-secondary/50">
-                  {l.label}
-                </span>
-              )}
+              <Link
+                to={l.href}
+                className="font-display text-xs font-bold uppercase tracking-widest text-secondary hover:text-acid"
+              >
+                {l.label}
+              </Link>
             </li>
           ))}
         </ul>

@@ -5,17 +5,17 @@ const IMG = (id) => `https://images.unsplash.com/photo-${id}?auto=format&fit=cro
 
 const CATEGORIES = [
   // ── Apparel ───────────────────────────────────────────────
-  { label: 'T-Shirts',           tag: 'TOPS',      href: '/shop?categories=t-shirts',      img: IMG('1521572163474-6864f9cf17ab') },
+  { label: 'T-Shirts',           tag: 'TOPS',      href: '/shop?categories=t-shirts',      img: IMG('1576871337622-98d48d1cf531') },
   { label: 'Shirts',             tag: 'TOPS',      href: '/shop?categories=shirts',        img: IMG('1596755094514-f87e34085b2c') },
   { label: 'Jeans',              tag: 'DENIM',     href: '/shop?categories=jeans',         img: IMG('1542272604-787c3835535d') },
   { label: 'Trousers',           tag: 'BOTTOMS',   href: '/shop?categories=trousers',      img: IMG('1624835567150-0c530a20d8cc') },
 
   // ── Footwear ──────────────────────────────────────────────
   { label: "Men's Shoes",        tag: 'FOOTWEAR',  href: '/shop?categories=mens-shoes',    img: IMG('1542291026-7eec264c27ff') },
-  { label: "Women's Shoes",      tag: 'FOOTWEAR',  href: '/shop?categories=womens-shoes',  img: IMG('1543163521-1bf539c55dd2') },
+  { label: "Women's Shoes",      tag: 'FOOTWEAR',  href: '/shop?categories=womens-shoes',  img: IMG('1595950653106-6c9ebd614d3a') },
 
   // ── Accessories ───────────────────────────────────────────
-  { label: 'Watches for Men',    tag: 'WATCHES',   href: '/shop?categories=watches-men',   img: IMG('1523275335684-37898b6baf30') },
+  { label: 'Watches for Men',    tag: 'WATCHES',   href: '/shop?categories=watches-men',   img: IMG('1524805444758-089113d48a6d') },
   { label: 'Watches for Women',  tag: 'WATCHES',   href: '/shop?categories=watches-women', img: IMG('1574358152207-c88cf120b77d') },
   { label: 'Sunglasses',         tag: 'EYEWEAR',   href: '/shop?categories=sunglasses',    img: IMG('1572635196237-14b3f281503f') },
 ];

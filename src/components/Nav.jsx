@@ -212,10 +212,15 @@ export default function Nav() {
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        style={{ top: drawerTop }}
-        className={`fixed inset-x-0 z-40 border-b border-hairline bg-base transition-transform duration-300 ease-in-out md:hidden ${
-          menuOpen ? 'translate-y-0' : '-translate-y-[120%]'
-        }`}
+        style={{
+          top: drawerTop,
+          // -100% clears the drawer's own height; the extra -drawerTop clears
+          // its top offset too, so any drawer height/offset combination ends
+          // up fully off-screen when closed, not just a fixed percentage that
+          // happened to work for one particular height.
+          transform: menuOpen ? 'translateY(0)' : `translateY(calc(-100% - ${drawerTop}px))`,
+        }}
+        className="fixed inset-x-0 z-40 border-b border-hairline bg-base transition-transform duration-300 ease-in-out md:hidden"
       >
         <nav className="flex flex-col px-6 pb-6 pt-2">
           {NAV_GROUPS.map((group) => (

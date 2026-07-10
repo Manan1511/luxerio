@@ -6,7 +6,6 @@ import { useCart } from '../context/CartContext.jsx';
 import { startCheckout, toCheckoutLine } from '../lib/checkout/session.js';
 import Gallery from '../components/Gallery.jsx';
 import VariantSelector from '../components/VariantSelector.jsx';
-import Accordion from '../components/Accordion.jsx';
 import StylingTips from '../components/StylingTips.jsx';
 import { ProductCardSkeleton } from '../components/ProductCard.jsx';
 import { trackEvent, EVENTS } from '../lib/analytics/ga4.js';
@@ -80,19 +79,6 @@ export default function Product() {
   };
 
   const soldOut = selected ? !selected.availableForSale : false;
-
-  const accordionItems = [
-    {
-      label: 'Technical Specs',
-      content: product?.metafields?.find?.((m) => m?.key === 'specs')?.value
-        ?? 'Heavyweight 450gsm French terry. Drop-shoulder silhouette. Industrial hardware at cuffs. Reinforced stitching at stress points. Oversized kangaroo pocket.',
-    },
-    {
-      label: 'Care Instructions',
-      content: product?.metafields?.find?.((m) => m?.key === 'care')?.value
-        ?? 'Machine wash cold. Tumble dry low. Do not bleach. Iron on low heat if needed. Wash inside out to preserve finish.',
-    },
-  ];
 
   if (isLoading) return <ProductSkeleton />;
 
@@ -193,9 +179,6 @@ export default function Product() {
                 Free shipping across India
               </p>
             </div>
-
-            {/* Accordions. */}
-            <Accordion items={accordionItems} />
           </div>
         </div>
       </div>
