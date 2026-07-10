@@ -14,6 +14,7 @@ export default function OrderConfirmed() {
   const orderNumber = searchParams.get('n');
   const pending = searchParams.get('pending') === '1';
   const source = searchParams.get('src');
+  const codBalance = Number(searchParams.get('bal')) || 0;
   // Neither a real order number nor a pending flag — someone landed here
   // directly (bookmark, stale back-button, crawler), not via a real payment.
   const noOrder = !orderNumber && !pending;
@@ -93,6 +94,16 @@ export default function OrderConfirmed() {
               <p className="mt-3 font-display text-xs uppercase tracking-widest text-secondary">
                 A confirmation email with your order details is on its way.
               </p>
+              {codBalance > 0 && (
+                <div className="mt-4 inline-block border border-acid bg-elevated px-4 py-2">
+                  <p className="font-display text-xs font-semibold uppercase tracking-widest text-acid">
+                    Balance due on delivery: {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(codBalance)}
+                  </p>
+                  <p className="mt-1 font-display text-[10px] uppercase tracking-wider text-secondary">
+                    Please keep this amount ready in cash.
+                  </p>
+                </div>
+              )}
             </>
           )}
         </div>
