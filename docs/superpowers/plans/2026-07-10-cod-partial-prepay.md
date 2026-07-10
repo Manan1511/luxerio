@@ -285,7 +285,11 @@ Replace the `try` block inside `handler` (lines 33–56) with:
     const { total, discount } = await priceCart(payload.lines, payload.discountCode);
     const isCod = payload.paymentMethod === 'cod';
     const chargeRupees = isCod ? codAdvanceRupees(total) : total;
-    const codBalance = isCod ? total - chargeRupees : 0;
+    // A discount can drop the total below the tier advance (e.g. a ₹200
+    // cart with a ₹100-off coupon still charges a ₹200 advance) — clamp so
+    // the balance never goes negative. Caught in Task 3's code review,
+    // corrected in commit 8440234.
+    const codBalance = isCod ? Math.max(0, total - chargeRupees) : 0;
     const amountPaise = Math.round(chargeRupees * 100);
     if (!Number.isInteger(amountPaise) || amountPaise < 100) {
       return json(400, { error: 'Invalid order total' });
