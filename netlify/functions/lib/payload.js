@@ -9,7 +9,7 @@ const MAX_EMAIL_LEN = 254;
 const MAX_DISCOUNT_CODE_LEN = 255;
 
 export function validatePayload(body) {
-  const { lines, email, address, discountCode } = body ?? {};
+  const { lines, email, address, discountCode, paymentMethod } = body ?? {};
   if (!Array.isArray(lines) || lines.length === 0 || lines.length > 50) return null;
   const seenVariants = new Set();
   for (const l of lines) {
@@ -24,6 +24,11 @@ export function validatePayload(body) {
   if (typeof email !== 'string' || email.length > MAX_EMAIL_LEN || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return null;
   if (!address || REQUIRED_ADDRESS.some((k) => typeof address[k] !== 'string' || !address[k].trim())) return null;
   if (typeof discountCode === 'string' && discountCode.length > MAX_DISCOUNT_CODE_LEN) return null;
+  // Absent means the pre-COD client shape — treat as full prepay. Any other
+  // value must be exactly 'full' or 'cod'; never silently default an
+  // unrecognized value to 'full' and charge more than the client asked for.
+  const method = paymentMethod === undefined ? 'full' : paymentMethod;
+  if (method !== 'full' && method !== 'cod') return null;
   return {
     lines: lines.map((l) => ({ variantId: l.variantId, quantity: l.quantity })),
     email: email.trim(),
@@ -34,6 +39,7 @@ export function validatePayload(body) {
       zip: address.zip.trim(), phone: address.phone.trim(),
     },
     discountCode: typeof discountCode === 'string' && discountCode.trim() ? discountCode.trim() : null,
+    paymentMethod: method,
   };
 }
 
@@ -52,6 +58,10 @@ export function encodeNotes(payload) {
     addr1: addr.slice(0, 500),
     addr2: addr.slice(500, 1000),
     code: (payload.discountCode || '').slice(0, 255),
+    // Single-char so it never threatens the notes size limit. 'c' = cod,
+    // 'f' = full. The webhook fallback path needs this to know whether an
+    // order it's recovering was ever meant to be a partial charge.
+    m: payload.paymentMethod === 'cod' ? 'c' : 'f',
   };
   if (items.length > 500 || addr.length > 1000) return { recovery: 'partial', email: payload.email };
   return notes;
@@ -64,5 +74,13 @@ export function decodeNotes(notes) {
     return { variantId: `gid://shopify/ProductVariant/${id}`, quantity: parseInt(qty, 10) };
   });
   const address = JSON.parse((notes.addr1 || '') + (notes.addr2 || ''));
-  return { lines, email: notes.email, address, discountCode: notes.code || null };
+  return {
+    lines,
+    email: notes.email,
+    address,
+    discountCode: notes.code || null,
+    // Orders created before this feature shipped have no 'm' key — treat
+    // as full prepay, which is what they always were.
+    paymentMethod: notes.m === 'c' ? 'cod' : 'full',
+  };
 }
