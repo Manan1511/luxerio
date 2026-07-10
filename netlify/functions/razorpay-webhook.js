@@ -44,6 +44,10 @@ export async function handler(event) {
     const { total, discount } = await priceCart(payload.lines, payload.discountCode);
     // payment.entity.amount is what Razorpay actually captured — the same
     // "derive from the real charge, not the tier" rule as confirm-order.
+    if (!Number.isFinite(payment.amount)) {
+      console.error('[webhook] Missing or invalid payment.amount for', rzpOrderId);
+      return json(400, { error: 'Invalid payment data' });
+    }
     const chargedRupees = payment.amount / 100;
     const codBalance = payload.paymentMethod === 'cod' ? Math.max(0, total - chargedRupees) : 0;
     const order = await createPaidOrder({
