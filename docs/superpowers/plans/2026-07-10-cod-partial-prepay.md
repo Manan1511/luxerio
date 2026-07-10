@@ -635,7 +635,10 @@ git commit -m "feat(cod): payment-method toggle and balance display on checkout"
 After line 16 (`const source = searchParams.get('src');`), add:
 
 ```js
-  const codBalance = Number(searchParams.get('bal')) || 0;
+  // Clamped — a malformed/negative bal query param has no financial risk
+  // (the real charge already happened server-side), but would otherwise
+  // display nonsense like "₹-500". Caught in Task 7's code review.
+  const codBalance = Math.max(0, Number(searchParams.get('bal')) || 0);
 ```
 
 Insert a new block right after the confirmed-state heading/paragraph (after line 97's closing `</>` and before the closing `</div>` at line 98):
@@ -644,7 +647,7 @@ Insert a new block right after the confirmed-state heading/paragraph (after line
               {codBalance > 0 && (
                 <div className="mt-4 inline-block border border-acid bg-elevated px-4 py-2">
                   <p className="font-display text-xs font-semibold uppercase tracking-widest text-acid">
-                    Balance due on delivery: {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR' }).format(codBalance)}
+                    Balance due on delivery: {fmt(codBalance)}
                   </p>
                   <p className="mt-1 font-display text-[10px] uppercase tracking-wider text-secondary">
                     Please keep this amount ready in cash.
