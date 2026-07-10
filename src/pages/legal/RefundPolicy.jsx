@@ -56,6 +56,11 @@ export default function RefundPolicy() {
           <li>Change of mind after the item has been used or the tags removed.</li>
           <li>Delay in delivery caused by incorrect address details provided at checkout.</li>
           <li>Items marked as "final sale" or purchased during clearance promotions, unless defective.</li>
+          <li>
+            For Cash on Delivery orders, the advance payment collected at checkout is non-refundable
+            if the order is refused at the doorstep or otherwise undelivered due to customer
+            unavailability.
+          </li>
         </ul>
       </Section>
 
