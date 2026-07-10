@@ -54,7 +54,10 @@ async function storefrontQuery(query, variables) {
   const res = await fetch(`https://${SHOP_DOMAIN}/api/${API_VERSION}/graphql.json`, {
     method: 'POST',
     headers: {
-      'X-Shopify-Storefront-Access-Token': process.env.SHOPIFY_STOREFRONT_TOKEN,
+      // Server-side calls use the PRIVATE Storefront token, which Shopify
+      // authenticates via a different header than the public/client token —
+      // Shopify-Storefront-Private-Token, not X-Shopify-Storefront-Access-Token.
+      'Shopify-Storefront-Private-Token': process.env.SHOPIFY_STOREFRONT_TOKEN,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ query, variables }),
