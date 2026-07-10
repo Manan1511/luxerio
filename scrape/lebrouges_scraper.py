@@ -87,6 +87,10 @@ def is_available(product: dict) -> bool:
     return any(v["available"] for v in product["variants"])
 
 
+def has_images(product: dict) -> bool:
+    return len(product.get("images", [])) > 0
+
+
 def compute_prices(price_str: str, discount: int) -> tuple[int, int]:
     """Returns (selling_price, compare_at_price). Selling uses X99 psychological pricing."""
     original = int(float(price_str))
@@ -178,10 +182,10 @@ def scrape_collection(col: dict, template_df: pd.DataFrame):
         print(f"  ERROR fetching: {e}")
         return
 
-    available = [p for p in all_products if is_available(p)]
+    available = [p for p in all_products if is_available(p) and has_images(p)]
     selected  = available[:PRODUCTS_TARGET]
 
-    print(f"  {len(all_products)} total | {len(available)} in-stock | {len(selected)} selected")
+    print(f"  {len(all_products)} total | {len(available)} in-stock w/ images | {len(selected)} selected")
 
     if not selected:
         print("  Skipping — no available products.")
