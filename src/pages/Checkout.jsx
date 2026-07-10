@@ -92,6 +92,14 @@ const emptyForm = {
   phone: '',
 };
 
+const COD_TIER_THRESHOLD = 1000;
+const COD_ADVANCE_BELOW = 200;
+const COD_ADVANCE_AT_OR_ABOVE = 300;
+
+function estimateCodAdvance(subtotal) {
+  return subtotal < COD_TIER_THRESHOLD ? COD_ADVANCE_BELOW : COD_ADVANCE_AT_OR_ABOVE;
+}
+
 export default function Checkout() {
   const navigate = useNavigate();
   const { customer } = useCustomer();
@@ -100,6 +108,11 @@ export default function Checkout() {
   const [discountCode, setDiscountCode] = useState('');
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('full');
+  // Set once the server responds — authoritative, overrides the client
+  // estimate below (a discount crossing the ₹1000 boundary can make the
+  // real charge disagree with the client-side guess).
+  const [serverAmounts, setServerAmounts] = useState(null); // { advancePaise, codBalance } | null
 
   // Load checkout session on mount; bail to /cart if empty/expired.
   useEffect(() => {
@@ -145,6 +158,7 @@ export default function Checkout() {
         email: form.email,
         address: { ...form },
         discountCode: discountCode.trim() ? discountCode.trim().toUpperCase() : null,
+        paymentMethod,
       };
       const res = await fetch('/.netlify/functions/create-payment', {
         method: 'POST',
@@ -153,6 +167,8 @@ export default function Checkout() {
       });
       const data = await parseJsonResponse(res);
       if (!res.ok) throw new Error(data.error || 'Could not start payment');
+
+      setServerAmounts({ advancePaise: data.amountPaise, codBalance: data.codBalance ?? 0 });
 
       await loadRazorpayScript();
       const rzp = new window.Razorpay({
@@ -174,7 +190,8 @@ export default function Checkout() {
             });
             const confirm = await parseJsonResponse(confirmRes);
             if (confirmRes.ok) {
-              navigate(`/order-confirmed?n=${encodeURIComponent(confirm.orderNumber)}&src=${session.source}`);
+              const balSuffix = confirm.codBalance > 0 ? `&bal=${confirm.codBalance}` : '';
+              navigate(`/order-confirmed?n=${encodeURIComponent(confirm.orderNumber)}&src=${session.source}${balSuffix}`);
             } else if (confirm.error === 'ORDER_PENDING') {
               navigate(`/order-confirmed?pending=1&src=${session.source}`);
             } else {
@@ -257,6 +274,39 @@ export default function Checkout() {
               </div>
               <Field label="PIN Code" name="zip" value={form.zip} onChange={handleField} required autoComplete="postal-code" />
             </div>
+          </section>
+
+          {/* Payment method. */}
+          <section className="flex flex-col gap-4 border border-hairline bg-surface p-6">
+            <h2 className="font-display text-sm font-semibold uppercase tracking-widest text-primary">
+              Payment Method
+            </h2>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => { setPaymentMethod('full'); setServerAmounts(null); }}
+                className={`border px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-widest transition-colors ${
+                  paymentMethod === 'full' ? 'border-acid text-primary' : 'border-hairline text-secondary hover:text-primary'
+                }`}
+              >
+                Pay in Full
+              </button>
+              <button
+                type="button"
+                onClick={() => { setPaymentMethod('cod'); setServerAmounts(null); }}
+                className={`border px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-widest transition-colors ${
+                  paymentMethod === 'cod' ? 'border-acid text-primary' : 'border-hairline text-secondary hover:text-primary'
+                }`}
+              >
+                Cash on Delivery
+              </button>
+            </div>
+            {paymentMethod === 'cod' && (
+              <p className="font-display text-[10px] uppercase tracking-widest text-secondary">
+                Pay ₹{serverAmounts ? serverAmounts.advancePaise / 100 : estimateCodAdvance(subtotal)} now to confirm your order.
+                The remaining balance is paid in cash on delivery.
+              </p>
+            )}
           </section>
 
           {/* Discount code. */}
@@ -359,12 +409,24 @@ export default function Checkout() {
 
             <div className="flex items-baseline justify-between">
               <span className="font-display text-[10px] font-semibold uppercase tracking-widest text-secondary">
-                Total
+                {paymentMethod === 'cod' ? 'Pay Now' : 'Total'}
               </span>
               <span className="font-display text-3xl font-semibold tabular-nums text-primary">
-                {fmt(subtotal, lineCurrency)}
+                {paymentMethod === 'cod'
+                  ? fmt((serverAmounts ? serverAmounts.advancePaise / 100 : estimateCodAdvance(subtotal)), lineCurrency)
+                  : fmt(subtotal, lineCurrency)}
               </span>
             </div>
+            {paymentMethod === 'cod' && (
+              <div className="flex items-center justify-between">
+                <span className="font-display text-[10px] font-bold uppercase tracking-widest text-secondary">
+                  Balance Due on Delivery
+                </span>
+                <span className="font-display text-sm font-semibold tabular-nums text-primary">
+                  {fmt(serverAmounts ? serverAmounts.codBalance : subtotal - estimateCodAdvance(subtotal), lineCurrency)}
+                </span>
+              </div>
+            )}
 
             <div className="flex items-center justify-center gap-2 text-center font-display text-[9px] uppercase tracking-widest text-secondary">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
