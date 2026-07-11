@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { WhatsappLogo } from '@phosphor-icons/react';
 
 const LINKS = [
+  { label: 'Contact', href: '/contact' },
   { label: 'Privacy', href: '/privacy-policy' },
   { label: 'Terms', href: '/terms-conditions' },
   { label: 'Shipping', href: '/shipping-policy' },
@@ -18,7 +20,7 @@ export default function Footer() {
           </span>
         </Link>
 
-        <ul className="flex flex-wrap gap-6">
+        <ul className="flex flex-wrap items-center gap-6">
           {LINKS.map((l) => (
             <li key={l.label}>
               <Link
@@ -29,6 +31,17 @@ export default function Footer() {
               </Link>
             </li>
           ))}
+          <li>
+            <a
+              href="https://wa.me/919537141121"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Chat on WhatsApp"
+              className="grid h-8 w-8 place-items-center border border-hairline text-secondary transition-colors hover:border-acid hover:text-acid"
+            >
+              <WhatsappLogo size={16} weight="regular" />
+            </a>
+          </li>
         </ul>
 
         <p className="text-xs uppercase tracking-wider text-secondary">

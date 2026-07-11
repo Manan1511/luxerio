@@ -16,6 +16,7 @@ const Product = lazy(() => import('./pages/Product.jsx'));
 const Cart = lazy(() => import('./pages/Cart.jsx'));
 const Account = lazy(() => import('./pages/Account.jsx'));
 const Categories = lazy(() => import('./pages/Categories.jsx'));
+const Contact = lazy(() => import('./pages/Contact.jsx'));
 const Checkout = lazy(() => import('./pages/Checkout.jsx'));
 const OrderConfirmed = lazy(() => import('./pages/OrderConfirmed.jsx'));
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy.jsx'));
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/cart" element={<ErrorBoundary><Cart /></ErrorBoundary>} />
             <Route path="/account" element={<ErrorBoundary><Account /></ErrorBoundary>} />
             <Route path="/categories" element={<ErrorBoundary><Categories /></ErrorBoundary>} />
+            <Route path="/contact" element={<ErrorBoundary><Contact /></ErrorBoundary>} />
             <Route path="/checkout" element={<ErrorBoundary><Checkout /></ErrorBoundary>} />
             <Route path="/order-confirmed" element={<ErrorBoundary><OrderConfirmed /></ErrorBoundary>} />
             <Route path="/privacy-policy" element={<ErrorBoundary><PrivacyPolicy /></ErrorBoundary>} />
